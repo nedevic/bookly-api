@@ -1,0 +1,39 @@
+services:
+  web:
+    build: .
+    image: bookly
+    container_name: bookly-service
+    ports:
+      - "8000:8000"
+    env_file:
+      - env/.env.auth
+      - env/.env.db
+      - env/.env.redis
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+  db:
+    image: postgres:17-alpine
+    container_name: postgres-service
+    restart: always
+    # ports:
+    #   - "5432:5432"
+    env_file:
+      - env/.env.db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  redis:
+    image: redis:8.0-rc1-alpine
+    container_name: redis-service
+    restart: always
+    # ports:
+    #   - "6379:6379"
+    env_file:
+      - env/.env.redis
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
