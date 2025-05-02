@@ -8,7 +8,7 @@ from src.auth.dependencies import (
     RefreshTokenBearer,
     get_current_user,
 )
-from src.auth.schemas import User, UserCreate, UserLogin
+from src.auth.schemas import User, UserBooks, UserCreate, UserLogin
 from src.auth.service import UserService
 from src.auth.utils import create_access_token_pair_from_user_data, verify_password
 from src.db.main import get_session
@@ -93,6 +93,6 @@ async def revoke_token(
     )
 
 
-@auth_router.get("/current_user", response_model=User)
+@auth_router.get("/current_user", response_model=UserBooks)
 async def get_user(user=Depends(get_current_user)):
     return user
