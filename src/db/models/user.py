@@ -5,11 +5,12 @@ from typing import List
 import sqlalchemy.dialects.postgresql as pg
 from sqlmodel import Column, Field, Relationship, SQLModel
 
-from src.db.models import book
+from src.db.models import book, review
 
 
-class User(SQLModel, table=True):
+class User(SQLModel, table=True):  # type: ignore[call-arg]
     __tablename__ = "users"
+
     uid: uuid.UUID = Field(
         sa_column=Column(
             pg.UUID,
@@ -29,7 +30,12 @@ class User(SQLModel, table=True):
     password_hash: str = Field(exclude=True)
     created_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
     updated_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
+
     books: List["book.Book"] = Relationship(
+        back_populates="user",
+        sa_relationship_kwargs={"lazy": "selectin"},
+    )
+    reviews: List["review.Review"] = Relationship(
         back_populates="user",
         sa_relationship_kwargs={"lazy": "selectin"},
     )
