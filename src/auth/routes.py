@@ -63,6 +63,7 @@ async def login_user(
     user_data = {
         "email": user.email,
         "user_uid": str(user.uid),
+        "role": user.role,
     }
     access_token_pair = create_access_token_pair_from_user_data(user_data)
     return JSONResponse(content=access_token_pair)
