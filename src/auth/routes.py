@@ -93,6 +93,6 @@ async def revoke_token(
     )
 
 
-@auth_router.get("/current_user")
+@auth_router.get("/current_user", response_model=User)
 async def get_user(user=Depends(get_current_user)):
     return user
