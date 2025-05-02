@@ -15,8 +15,7 @@ engine = AsyncEngine(
 
 async def init_db():
     async with engine.begin() as conn:
-        from src.auth.models import User
-        from src.books.models import Book
+        from src.db.models import Book, User
 
         await conn.run_sync(SQLModel.metadata.create_all)
 

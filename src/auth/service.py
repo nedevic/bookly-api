@@ -1,9 +1,9 @@
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.auth.models import User
 from src.auth.schemas import UserCreate
 from src.auth.utils import generate_passwd_hash
+from src.db.models import User
 
 
 class UserService:
@@ -28,4 +28,5 @@ class UserService:
         new_user = User(**user_data_dict)
         session.add(new_user)
         await session.commit()
+        # await session.refresh(new_user)  # this is needed for user books to also be fetched
         return new_user

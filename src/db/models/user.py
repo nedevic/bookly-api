@@ -5,7 +5,7 @@ from typing import List
 import sqlalchemy.dialects.postgresql as pg
 from sqlmodel import Column, Field, Relationship, SQLModel
 
-from src.books import models
+from src.db.models import book
 
 
 class User(SQLModel, table=True):
@@ -29,7 +29,7 @@ class User(SQLModel, table=True):
     password_hash: str = Field(exclude=True)
     created_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
     updated_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
-    books: List["models.Book"] = Relationship(
+    books: List["book.Book"] = Relationship(
         back_populates="user",
         sa_relationship_kwargs={"lazy": "selectin"},
     )
