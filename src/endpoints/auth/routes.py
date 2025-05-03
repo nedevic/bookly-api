@@ -3,15 +3,18 @@ from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.auth.dependencies import (
+from src.db.main import get_session
+from src.endpoints.auth.dependencies import (
     AccessTokenBearer,
     RefreshTokenBearer,
     get_current_user,
 )
-from src.auth.schemas import User, UserCreate, UserLogin, UserRelations
-from src.auth.service import UserService
-from src.auth.utils import create_access_token_pair_from_user_data, verify_password
-from src.db.main import get_session
+from src.endpoints.auth.schemas import User, UserCreate, UserLogin, UserRelations
+from src.endpoints.auth.service import UserService
+from src.endpoints.auth.utils import (
+    create_access_token_pair_from_user_data,
+    verify_password,
+)
 from src.redis.redis_jti import add_jti_to_blocklist
 
 auth_router = APIRouter()

@@ -4,10 +4,10 @@ from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.auth.dependencies import AccessTokenBearer
-from src.books.schemas import Book, BookCreate, BookRelations, BookUpdate
-from src.books.service import BookService
 from src.db.main import get_session
+from src.endpoints.auth.dependencies import AccessTokenBearer
+from src.endpoints.books.schemas import Book, BookCreate, BookRelations, BookUpdate
+from src.endpoints.books.service import BookService
 
 book_router = APIRouter()
 book_service = BookService()

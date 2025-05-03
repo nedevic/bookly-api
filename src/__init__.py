@@ -6,11 +6,11 @@ sys.dont_write_bytecode = True  # this is to prevent python from generating cach
 
 from fastapi import FastAPI
 
-from src.auth.routes import auth_router
-from src.books.routes import book_router
+from src.endpoints.auth.routes import auth_router
+from src.endpoints.books.routes import book_router
 
 # from src.db.main import init_db
-from src.reviews.routes import review_router
+from src.endpoints.reviews.routes import review_router
 
 # @asynccontextmanager
 # async def life_span(app: FastAPI):

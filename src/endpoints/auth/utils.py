@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import jwt
 from passlib.context import CryptContext
 
-from src.auth.config import settings
+from src.endpoints.auth.config import settings
 
 ACCESS_TOKEN_EXPIRY = 60 * 60  # 1 hour
 REFRESH_TOKEN_EXPIRY = 60 * 60 * 24 * 2  # 2 days

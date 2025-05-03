@@ -3,8 +3,8 @@ from datetime import datetime
 from sqlmodel import desc, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.books.schemas import BookCreate, BookUpdate
 from src.db.models import Book
+from src.endpoints.books.schemas import BookCreate, BookUpdate
 
 
 class BookService:

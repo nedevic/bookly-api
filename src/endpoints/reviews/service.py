@@ -1,9 +1,9 @@
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.auth.service import UserService
-from src.books.service import BookService
 from src.db.models import Review
-from src.reviews.schemas import ReviewCreate
+from src.endpoints.auth.service import UserService
+from src.endpoints.books.service import BookService
+from src.endpoints.reviews.schemas import ReviewCreate
 
 book_service = BookService()
 user_service = UserService()

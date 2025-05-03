@@ -1,7 +1,7 @@
 import redis.asyncio as redis
 from src.redis.config import settings
 
-JTI_EXPIRY = 60 * 60  # 1 hour; corresponds to ACCESS_TOKEN_EXPIRY from src.auth.utils
+JTI_EXPIRY = 60 * 60  # 1 hour; corresponds to ACCESS_TOKEN_EXPIRY from auth utils
 
 
 token_blocklist = redis.Redis(

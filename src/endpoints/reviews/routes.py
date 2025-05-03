@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, status
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from src.auth.dependencies import get_current_user
 from src.db.main import get_session
 from src.db.models import User
-from src.reviews.schemas import Review, ReviewCreate
-from src.reviews.service import ReviewService
+from src.endpoints.auth.dependencies import get_current_user
+from src.endpoints.reviews.schemas import Review, ReviewCreate
+from src.endpoints.reviews.service import ReviewService
 
 review_router = APIRouter()
 review_service = ReviewService()
