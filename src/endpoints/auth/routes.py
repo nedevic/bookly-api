@@ -15,7 +15,8 @@ from src.endpoints.auth.utils import (
     verify_password,
 )
 from src.redis.redis_jti import add_jti_to_blocklist
-from src.schemas.auth_schemas import User, UserCreate, UserLogin, UserRelations
+from src.schemas.auth_relations_schemas import UserRelations
+from src.schemas.auth_schemas import User, UserCreate, UserLogin
 
 auth_router = APIRouter()
 user_service = UserService()

@@ -7,7 +7,8 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from src.db.main import get_session
 from src.endpoints.auth.dependencies import AccessTokenBearer
 from src.endpoints.books.service import BookService
-from src.schemas.books_schemas import Book, BookCreate, BookRelations, BookUpdate
+from src.schemas.book_relations_schemas import BookRelations
+from src.schemas.books_schemas import Book, BookCreate, BookUpdate
 
 book_router = APIRouter()
 book_service = BookService()

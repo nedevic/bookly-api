@@ -1,11 +1,7 @@
 import uuid
 from datetime import datetime
-from typing import List
 
 from pydantic import BaseModel, Field
-
-from src.schemas.books_schemas import Book
-from src.schemas.reviews_schemas import Review
 
 
 class User(BaseModel):
@@ -18,11 +14,6 @@ class User(BaseModel):
     password_hash: str = Field(exclude=True)
     created_at: datetime
     updated_at: datetime
-
-
-class UserRelations(User):
-    books: List[Book]
-    reviews: List[Review]
 
 
 class UserCreate(BaseModel):
