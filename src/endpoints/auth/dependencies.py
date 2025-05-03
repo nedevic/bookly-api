@@ -7,7 +7,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from src.db.main import get_session
 from src.db.models import User
-from src.endpoints.auth.service import UserService
+from src.endpoints.auth.service import UserNotFoundException, UserService
 from src.endpoints.auth.utils import decode_token
 from src.redis.redis_jti import token_in_blocklist
 
@@ -82,9 +82,20 @@ async def get_current_user(
     token_details: dict = Depends(AccessTokenBearer()),
     session: AsyncSession = Depends(get_session),
 ):
-    user_email = token_details["user"]["email"]
-    user = await user_service.get_user_by_email(user_email, session)
-    return user
+    try:
+        user_email = token_details["user"]["email"]
+        return await user_service.get_user_by_email(user_email, session)
+    except UserNotFoundException:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "Missing or invalid email",
+                "resolution": (
+                    "Please make sure your user email is correct and up to date "
+                    "or try to contact support"
+                ),
+            },
+        )
 
 
 class RoleChecker:

@@ -9,7 +9,7 @@ from src.endpoints.auth.dependencies import (
     RefreshTokenBearer,
     get_current_user,
 )
-from src.endpoints.auth.service import UserService
+from src.endpoints.auth.service import UserNotFoundException, UserService
 from src.endpoints.auth.utils import (
     create_access_token_pair_from_user_data,
     verify_password,
@@ -50,8 +50,9 @@ async def login_user(
     email = login_data.email
     password = login_data.password
 
-    user = await user_service.get_user_by_email(email, session)
-    if user is None:
+    try:
+        user = await user_service.get_user_by_email(email, session)
+    except UserNotFoundException:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Invalid email or password.",
@@ -88,7 +89,6 @@ async def revoke_token(
 ):
     jti = token_details["jti"]
     await add_jti_to_blocklist(jti)
-
     return JSONResponse(
         content={
             "message": "Logged out successfully",

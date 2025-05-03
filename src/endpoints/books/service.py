@@ -7,11 +7,21 @@ from src.db.models import Book
 from src.schemas.books_schemas import BookCreate, BookUpdate
 
 
+class BookException(Exception):
+    """Base class for BookService exceptions"""
+
+
+class BookNotFoundException(BookException):
+    def __init__(self, message: str = "Book was not found."):
+        super().__init__(message)
+
+
 class BookService:
     async def get_all_books(self, session: AsyncSession):
         statement = select(Book).order_by(desc(Book.created_at))
         result = await session.exec(statement)
-        return result.all()
+        books = result.all()
+        return books
 
     async def get_user_books(self, user_uid: str, session: AsyncSession):
         statement = (
@@ -20,12 +30,19 @@ class BookService:
             .order_by(desc(Book.created_at))
         )
         result = await session.exec(statement)
-        return result.all()
+        user_books = result.all()
+        return user_books
 
     async def get_book(self, book_uid: str, session: AsyncSession):
+        """
+        Gets a book by book_uid. Raises BookNotFoundException if no book is found.
+        """
         statement = select(Book).where(Book.uid == book_uid)
         result = await session.exec(statement)
-        return result.first()
+        book = result.first()
+        if book:
+            return book
+        raise BookNotFoundException(f"Book with id {book_uid} was not found.")
 
     async def create_book(
         self, book_data: BookCreate, user_uid: str, session: AsyncSession
@@ -49,9 +66,10 @@ class BookService:
     async def update_book(
         self, book_uid: str, update_data: BookUpdate, session: AsyncSession
     ):
+        """
+        Finds a book by book_uid and updates it. Raises BookNotFoundException if no book is found.
+        """
         book_to_update = await self.get_book(book_uid, session)
-        if book_to_update is None:
-            return None
 
         update_data_dict = update_data.model_dump()
         for k, v in update_data_dict.items():
@@ -61,10 +79,10 @@ class BookService:
         return book_to_update
 
     async def delete_book(self, book_uid: str, session: AsyncSession):
+        """
+        Finds a book by book_uid and deletes it. Raises BookNotFoundException if no book is found.
+        """
         book_to_delete = await self.get_book(book_uid, session)
-        if book_to_delete is None:
-            return None
-
         await session.delete(book_to_delete)
         await session.commit()
         return book_to_delete

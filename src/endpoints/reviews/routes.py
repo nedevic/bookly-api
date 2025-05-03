@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from src.db.main import get_session
 from src.db.models import User
 from src.endpoints.auth.dependencies import get_current_user
-from src.endpoints.reviews.service import ReviewService
+from src.endpoints.reviews.service import ReviewException, ReviewService
 from src.schemas.reviews_schemas import Review, ReviewCreate
 
 review_router = APIRouter()
@@ -20,10 +20,15 @@ async def add_review_for_book(
     current_user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_session),
 ):
-    new_review = await review_service.add_review_for_book(
-        user_email=current_user.email,
-        book_uid=book_uid,
-        review_data=review_data,
-        session=session,
-    )
-    return new_review
+    try:
+        return await review_service.add_review_for_book(
+            user_email=current_user.email,
+            book_uid=book_uid,
+            review_data=review_data,
+            session=session,
+        )
+    except ReviewException:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You are not allowed to add a review or the book does not exist.",
+        )

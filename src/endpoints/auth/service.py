@@ -6,16 +6,33 @@ from src.endpoints.auth.utils import generate_passwd_hash
 from src.schemas.auth_schemas import UserCreate
 
 
+class UserException(Exception):
+    """Base class for UserService exceptions"""
+
+
+class UserNotFoundException(UserException):
+    def __init__(self, message: str = "User was not found."):
+        super().__init__(message)
+
+
 class UserService:
     async def get_user_by_email(self, email: str, session: AsyncSession):
+        """
+        Gets an user by email. Raises UserNotFoundException if no user is found.
+        """
         statement = select(User).where(User.email == email)
         result = await session.exec(statement)
         user = result.first()
-        return user
+        if user:
+            return user
+        raise UserNotFoundException(f"User with email {email} was not found.")
 
     async def user_exists(self, email: str, session: AsyncSession):
-        user = await self.get_user_by_email(email, session)
-        return user is not None
+        try:
+            await self.get_user_by_email(email, session)
+            return True
+        except UserNotFoundException:
+            return False
 
     async def create_user(self, user_data: UserCreate, session: AsyncSession):
         user_data_dict = user_data.model_dump()
@@ -28,5 +45,4 @@ class UserService:
         new_user = User(**user_data_dict)
         session.add(new_user)
         await session.commit()
-        # await session.refresh(new_user)  # this is needed for user books to also be fetched
         return new_user
