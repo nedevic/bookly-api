@@ -1,6 +1,7 @@
 import logging
 import uuid
 from datetime import datetime, timedelta
+from enum import Enum
 
 import jwt
 from passlib.context import CryptContext
@@ -9,6 +10,12 @@ from src.endpoints.auth.config import settings
 
 ACCESS_TOKEN_EXPIRY = 60 * 60  # 1 hour
 REFRESH_TOKEN_EXPIRY = 60 * 60 * 24 * 2  # 2 days
+
+
+class UserRoles(Enum):
+    ADMIN = "admin"
+    USER = "user"
+
 
 passwd_context = CryptContext(
     schemes=["bcrypt"],

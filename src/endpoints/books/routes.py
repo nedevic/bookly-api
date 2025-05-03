@@ -6,6 +6,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from src.db.main import get_session
 from src.endpoints.auth.dependencies import AccessTokenBearer
+from src.endpoints.books.dependencies import owns_book_or_admin
 from src.endpoints.books.service import BookNotFoundException, BookService
 from src.schemas.book_relations_schemas import BookRelations
 from src.schemas.books_schemas import Book, BookCreate, BookUpdate
@@ -61,7 +62,7 @@ async def update_book(
     book_id: str,
     book_update_data: BookUpdate,
     session: AsyncSession = Depends(get_session),
-    token_details=Depends(access_token_bearer),
+    _=Depends(owns_book_or_admin),
 ) -> dict:
     try:
         return await book_service.update_book(book_id, book_update_data, session)
@@ -75,7 +76,7 @@ async def update_book(
 async def delete_book(
     book_id: str,
     session: AsyncSession = Depends(get_session),
-    token_details=Depends(access_token_bearer),
+    _=Depends(owns_book_or_admin),
 ):
     try:
         await book_service.delete_book(book_id, session)
