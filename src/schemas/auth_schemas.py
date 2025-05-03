@@ -4,8 +4,8 @@ from typing import List
 
 from pydantic import BaseModel, Field
 
-from src.endpoints.books.schemas import Book
-from src.endpoints.reviews.schemas import Review
+from src.schemas.books_schemas import Book
+from src.schemas.reviews_schemas import Review
 
 
 class User(BaseModel):

@@ -5,7 +5,7 @@ from typing import List
 from pydantic import BaseModel
 
 # from src.auth.schemas import User
-from src.endpoints.reviews import schemas
+from src.schemas import reviews_schemas
 
 
 class Book(BaseModel):
@@ -22,7 +22,7 @@ class Book(BaseModel):
 
 class BookRelations(Book):
     # user: User
-    reviews: List["schemas.Review"]
+    reviews: List["reviews_schemas.Review"]
 
 
 class BookCreate(BaseModel):

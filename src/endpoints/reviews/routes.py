@@ -4,8 +4,8 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from src.db.main import get_session
 from src.db.models import User
 from src.endpoints.auth.dependencies import get_current_user
-from src.endpoints.reviews.schemas import Review, ReviewCreate
 from src.endpoints.reviews.service import ReviewService
+from src.schemas.reviews_schemas import Review, ReviewCreate
 
 review_router = APIRouter()
 review_service = ReviewService()

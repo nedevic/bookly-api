@@ -9,13 +9,13 @@ from src.endpoints.auth.dependencies import (
     RefreshTokenBearer,
     get_current_user,
 )
-from src.endpoints.auth.schemas import User, UserCreate, UserLogin, UserRelations
 from src.endpoints.auth.service import UserService
 from src.endpoints.auth.utils import (
     create_access_token_pair_from_user_data,
     verify_password,
 )
 from src.redis.redis_jti import add_jti_to_blocklist
+from src.schemas.auth_schemas import User, UserCreate, UserLogin, UserRelations
 
 auth_router = APIRouter()
 user_service = UserService()
