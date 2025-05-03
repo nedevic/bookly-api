@@ -35,7 +35,7 @@ class BookService:
 
     async def user_owns_book(self, user_uid: str, book_uid: str, session: AsyncSession):
         statement = select(Book).where(
-            Book.uid == book_uid and Book.user_uid == user_uid
+            (Book.uid == book_uid) & (Book.user_uid == user_uid)
         )
         result = await session.exec(statement)
         user_book = result.first()
