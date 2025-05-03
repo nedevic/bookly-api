@@ -1,3 +1,3 @@
-from .book import Book
-from .review import Review
-from .user import User
+from .auth_models import User
+from .books_models import Book
+from .reviews_models import Review

@@ -13,11 +13,11 @@ engine = AsyncEngine(
 )
 
 
-async def init_db():
-    async with engine.begin() as conn:
-        from src.db.models import Book, User
+# async def init_db():
+#     async with engine.begin() as conn:
+#         from src.db.models import Book, Review, User
 
-        await conn.run_sync(SQLModel.metadata.create_all)
+#         await conn.run_sync(SQLModel.metadata.create_all)
 
 
 async def get_session():

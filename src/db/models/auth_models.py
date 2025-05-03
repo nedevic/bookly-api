@@ -5,7 +5,7 @@ from typing import List
 import sqlalchemy.dialects.postgresql as pg
 from sqlmodel import Column, Field, Relationship, SQLModel
 
-from src.db.models import book, review
+from src.db.models import books_models, reviews_models
 
 
 class User(SQLModel, table=True):  # type: ignore[call-arg]
@@ -31,11 +31,11 @@ class User(SQLModel, table=True):  # type: ignore[call-arg]
     created_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
     updated_at: datetime = Field(sa_column=Column(pg.TIMESTAMP, default=datetime.now))
 
-    books: List["book.Book"] = Relationship(
+    books: List["books_models.Book"] = Relationship(
         back_populates="user",
         sa_relationship_kwargs={"lazy": "selectin"},
     )
-    reviews: List["review.Review"] = Relationship(
+    reviews: List["reviews_models.Review"] = Relationship(
         back_populates="user",
         sa_relationship_kwargs={"lazy": "selectin"},
     )
