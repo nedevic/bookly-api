@@ -25,22 +25,12 @@ async def get_all_books(
 
 
 @book_router.get("/user/{user_uid}", response_model=List[Book])
-async def get_user_book_submissions(
+async def get_user_books(
     user_uid: str,
     session: AsyncSession = Depends(get_session),
     token_details=Depends(access_token_bearer),
 ):
     return await book_service.get_user_books(user_uid, session)
-
-
-@book_router.post("/", status_code=status.HTTP_201_CREATED, response_model=Book)
-async def create_a_book(
-    book_data: BookCreate,
-    session: AsyncSession = Depends(get_session),
-    token_details=Depends(access_token_bearer),
-) -> dict:
-    user_id = token_details["user"]["user_uid"]
-    return await book_service.create_book(book_data, user_id, session)
 
 
 @book_router.get("/{book_id}", response_model=BookRelations)
@@ -55,6 +45,16 @@ async def get_book(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Book not found!"
         )
+
+
+@book_router.post("/", status_code=status.HTTP_201_CREATED, response_model=Book)
+async def create_book(
+    book_data: BookCreate,
+    session: AsyncSession = Depends(get_session),
+    token_details=Depends(access_token_bearer),
+) -> dict:
+    user_id = token_details["user"]["user_uid"]
+    return await book_service.create_book(book_data, user_id, session)
 
 
 @book_router.patch("/{book_id}", response_model=Book)

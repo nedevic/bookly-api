@@ -33,14 +33,6 @@ class BookService:
         user_books = result.all()
         return user_books
 
-    async def user_owns_book(self, user_uid: str, book_uid: str, session: AsyncSession):
-        statement = select(Book).where(
-            (Book.uid == book_uid) & (Book.user_uid == user_uid)
-        )
-        result = await session.exec(statement)
-        user_book = result.first()
-        return user_book is not None
-
     async def get_book(self, book_uid: str, session: AsyncSession):
         """
         Gets a book by book_uid. Raises BookNotFoundException if no book is found.
@@ -51,6 +43,14 @@ class BookService:
         if book:
             return book
         raise BookNotFoundException(f"Book with id {book_uid} was not found.")
+
+    async def user_owns_book(self, user_uid: str, book_uid: str, session: AsyncSession):
+        statement = select(Book).where(
+            (Book.uid == book_uid) & (Book.user_uid == user_uid)
+        )
+        result = await session.exec(statement)
+        user_book = result.first()
+        return user_book is not None
 
     async def create_book(
         self, book_data: BookCreate, user_uid: str, session: AsyncSession
