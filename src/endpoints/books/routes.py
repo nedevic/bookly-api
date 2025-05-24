@@ -41,9 +41,10 @@ async def get_book(
 ) -> dict:
     try:
         return await book_service.get_book(book_id, session)
-    except BookNotFoundException:
+    except BookNotFoundException as exc:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Book not found!"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
         )
 
 
@@ -66,9 +67,10 @@ async def update_book(
 ) -> dict:
     try:
         return await book_service.update_book(book_id, book_update_data, session)
-    except BookNotFoundException:
+    except BookNotFoundException as exc:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Book not found!"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
         )
 
 
@@ -80,7 +82,8 @@ async def delete_book(
 ):
     try:
         await book_service.delete_book(book_id, session)
-    except BookNotFoundException:
+    except BookNotFoundException as exc:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Book not found!"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
         )

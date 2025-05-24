@@ -24,11 +24,11 @@ VERSION = "v1"
 
 app = FastAPI(
     title="Bookly",
-    description="A REST API for a book review web service",
+    description="A REST API for a book review web service.",
     version=VERSION,
     # lifespan=life_span,
 )
 
-app.include_router(auth_router, prefix="/api/{version}/auth", tags=["auth"])
-app.include_router(book_router, prefix="/api/{version}/books", tags=["books"])
-app.include_router(review_router, prefix="/api/{version}/reviews", tags=["reviews"])
+app.include_router(auth_router, prefix=f"/api/{VERSION}/auth", tags=["auth"])
+app.include_router(book_router, prefix=f"/api/{VERSION}/books", tags=["books"])
+app.include_router(review_router, prefix=f"/api/{VERSION}/reviews", tags=["reviews"])

@@ -20,4 +20,5 @@ class ReviewCreate(BaseModel):
     review_text: str
 
 
-ReviewUpdate = ReviewCreate
+class ReviewUpdate(ReviewCreate):
+    pass  # this is currently the same as ReviewCreate; in the future it might be different

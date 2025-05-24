@@ -44,9 +44,10 @@ async def get_review(
 ) -> dict:
     try:
         return await review_service.get_review(review_id, session)
-    except ReviewNotFoundException:
+    except ReviewNotFoundException as exc:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Review not found!"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
         )
 
 
@@ -68,10 +69,10 @@ async def add_review_for_book(
             review_data=review_data,
             session=session,
         )
-    except ReviewException:
+    except ReviewException as exc:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="You are not allowed to add a review or the book does not exist.",
+            detail=str(exc),
         )
 
 
@@ -86,9 +87,10 @@ async def update_review(
         return await review_service.update_review(
             review_id, review_update_data, session
         )
-    except ReviewNotFoundException:
+    except ReviewNotFoundException as exc:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Review not found!"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
         )
 
 
@@ -100,7 +102,8 @@ async def delete_review(
 ):
     try:
         await review_service.delete_review(review_id, session)
-    except ReviewNotFoundException:
+    except ReviewNotFoundException as exc:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Review not found!"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
         )
