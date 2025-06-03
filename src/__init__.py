@@ -8,9 +8,10 @@ from fastapi import FastAPI
 
 from src.endpoints.auth.routes import auth_router
 from src.endpoints.books.routes import book_router
+from src.endpoints.reviews.routes import review_router
+from src.endpoints.tags.routes import tag_router
 
 # from src.db.main import init_db
-from src.endpoints.reviews.routes import review_router
 
 # @asynccontextmanager
 # async def life_span(app: FastAPI):
@@ -32,3 +33,4 @@ app = FastAPI(
 app.include_router(auth_router, prefix=f"/api/{VERSION}/auth", tags=["auth"])
 app.include_router(book_router, prefix=f"/api/{VERSION}/books", tags=["books"])
 app.include_router(review_router, prefix=f"/api/{VERSION}/reviews", tags=["reviews"])
+app.include_router(tag_router, prefix=f"/api/{VERSION}/tags", tags=["tags"])

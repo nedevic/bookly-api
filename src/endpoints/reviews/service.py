@@ -73,11 +73,11 @@ class ReviewService:
         try:
             book = await book_service.get_book(book_uid, session)
             user = await user_service.get_user_by_email(user_email, session)
-        except (BookException, UserException):
+        except (BookException, UserException) as exc:
             raise ReviewException(
                 "Book or user couldn't be found. "
                 f"Book id: {book_uid}  -  User email: {user_email}"
-            )
+            ) from exc
 
         review_data_dict = review_data.model_dump()
         review_data_dict.update(
