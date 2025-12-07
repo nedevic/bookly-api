@@ -10,15 +10,16 @@ from src.endpoints.auth.routes import auth_router
 from src.endpoints.books.routes import book_router
 from src.endpoints.reviews.routes import review_router
 from src.endpoints.tags.routes import tag_router
+from src.middleware.main import register_middleware
 
 # from src.db.main import init_db
 
 # @asynccontextmanager
 # async def life_span(app: FastAPI):
-#     print("server is started")
+#     print("Server has started.")
 #     await init_db()
 #     yield
-#     print("server has been stopped")
+#     print("Server has been stopped.")
 
 
 VERSION = "v1"
@@ -29,6 +30,8 @@ app = FastAPI(
     version=VERSION,
     # lifespan=life_span,
 )
+
+register_middleware(app)
 
 app.include_router(auth_router, prefix=f"/api/{VERSION}/auth", tags=["auth"])
 app.include_router(book_router, prefix=f"/api/{VERSION}/books", tags=["books"])
